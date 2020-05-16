@@ -4,7 +4,7 @@ A small Go utility for splitting a file into smaller ones.
 
 ## Installation
 ```shell script
-$ go get github.com/knwoop/ticker
+$ go get -u github.com/knwoop/go-splitter
 ```
 
 ## how to use
