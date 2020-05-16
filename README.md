@@ -22,7 +22,7 @@ import (
 func main() {
     f, err := os.Open("test.txt")
     if err != nil{
-        fmt.Println("error")
+        log.Fatal(err)
     }
     defer f.Close() 
     b1, b2, err := splitter.Split(f, true, 40, 60)
