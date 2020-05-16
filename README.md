@@ -2,6 +2,11 @@
 
 A small Go utility for splitting a file into smaller ones.
 
+## Installation
+```shell script
+$ go get github.com/knwoop/ticker
+```
+
 ## how to use
 ```go
 package main
