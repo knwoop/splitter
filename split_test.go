@@ -2,10 +2,11 @@ package splitter_test
 
 import (
 	"bytes"
-	"github.com/knwoop/go-splitter"
 	"io"
 	"strings"
 	"testing"
+
+	"github.com/knwoop/go-splitter"
 
 	"github.com/google/go-cmp/cmp"
 )
