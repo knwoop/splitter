@@ -19,26 +19,26 @@ func Split(r io.Reader, hasHeader bool, partSize1, partSize2 int) (io.Reader, io
 		b2 = append(append(b2, l...), '\n')
 	}
 
-	lines1 := 0
-	lines2 := 0
+	dst1 := 0
+	dst2 := 0
 	for {
 		if !scanner.Scan() {
 			break
 		}
 		l := scanner.Bytes()
-		if lines1 < partSize1 {
+		if dst1 < partSize1 {
 			b1 = append(append(b1, l...), '\n')
-			lines1++
+			dst1++
 		} else {
 			b2 = append(append(b2, l...), '\n')
-			lines2++
+			dst2++
 		}
 	}
 
-	total := lines1 + lines1
+	total := dst1 + dst2
 	if (partSize1 + partSize2) != total {
 		const msg = "error row number(%d) and args total number of partSize1(%d) and partSize2(%d) are not equal"
-		return nil, nil, fmt.Errorf(msg, total, partSize1, partSize1)
+		return nil, nil, fmt.Errorf(msg, total, partSize1, partSize2)
 	}
 
 	return bytes.NewReader(b1), bytes.NewReader(b2), nil
