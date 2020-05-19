@@ -30,7 +30,7 @@ func main() {
         log.Fatal(err)
     }
     defer f.Close() 
-    b1, b2, err := splitter.Split(f, true, 40, 60)
+    readers, err := splitter.Split(f, true, 40)
     if err != nil {
         log.Fatal(err)
     }
@@ -59,16 +59,16 @@ var csv = `header1,header2
 
 func main() {
 	r := strings.NewReader(csv)
-	b1, b2, err := splitter.Split(r, true, 1, 3)
+	readers, err := splitter.Split(r, true, 3)
 	if err != nil {
 		log.Fatal(err)
 	}
 	buf1 := new(bytes.Buffer)
-	if _, err := buf1.ReadFrom(b1); err != nil {
+	if _, err := buf1.ReadFrom(readers[0]); err != nil {
 		log.Fatal(err)
 	}
 	buf2 := new(bytes.Buffer)
-	if _, err := buf2.ReadFrom(b2); err != nil {
+	if _, err := buf2.ReadFrom(readers[1]); err != nil {
 		log.Fatal(err)
 	}
 	fmt.Println(buf1)
