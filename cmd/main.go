@@ -3,11 +3,12 @@ package main
 import (
 	"flag"
 	"fmt"
-	"github.com/knwoop/splitter"
 	"io"
 	"log"
 	"os"
 	"path/filepath"
+
+	"github.com/knwoop/splitter"
 )
 
 func main() {
