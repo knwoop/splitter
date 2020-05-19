@@ -1,10 +1,10 @@
-# go-split
+# splitter
 
 A small Go utility for splitting a file into smaller ones.
 
 ## Installation
 ```shell script
-$ go get -u github.com/knwoop/go-splitter
+$ go get -u github.com/knwoop/splitter
 ```
 
 ## how to use
@@ -16,7 +16,7 @@ import (
     "log"
     "os"
     
-    "github.com/knwoop/go-splitter"
+    "github.com/knwoop/splitter"
 )
 
 func main() {
@@ -43,7 +43,7 @@ import (
 	"log"
 	"strings"
 
-	"github.com/knwoop/go-splitter"
+	"github.com/knwoop/splitter"
 )
 
 var csv = `header1,header2
