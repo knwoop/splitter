@@ -7,12 +7,12 @@ import (
 	"io"
 )
 
-func Split(r io.Reader, hasHeader bool, partSize1, partSize2 int) (io.Reader, io.Reader, error) {
+func Split(r io.Reader, hasHeader bool, sep int) ([]io.Reader, error) {
 	scanner := bufio.NewScanner(r)
 	var b1, b2 []byte
 	if hasHeader {
 		if !scanner.Scan() {
-			return nil, nil, fmt.Errorf("error no data")
+			return nil, fmt.Errorf("error no data")
 		}
 		l := scanner.Bytes()
 		b1 = append(append(b1, l...), '\n')
@@ -26,7 +26,7 @@ func Split(r io.Reader, hasHeader bool, partSize1, partSize2 int) (io.Reader, io
 			break
 		}
 		l := scanner.Bytes()
-		if dst1 < partSize1 {
+		if dst1 < sep {
 			b1 = append(append(b1, l...), '\n')
 			dst1++
 		} else {
@@ -35,11 +35,5 @@ func Split(r io.Reader, hasHeader bool, partSize1, partSize2 int) (io.Reader, io
 		}
 	}
 
-	total := dst1 + dst2
-	if (partSize1 + partSize2) != total {
-		const msg = "error row number(%d) and args total number of partSize1(%d) and partSize2(%d) are not equal"
-		return nil, nil, fmt.Errorf(msg, total, partSize1, partSize2)
-	}
-
-	return bytes.NewReader(b1), bytes.NewReader(b2), nil
+	return []io.Reader{bytes.NewReader(b1), bytes.NewReader(b2)}, nil
 }

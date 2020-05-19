@@ -27,8 +27,7 @@ func TestSplit(t *testing.T) {
 	type args struct {
 		reader    io.Reader
 		hasHeader bool
-		partSize1 int
-		partSize2 int
+		sep       int
 	}
 	type want struct {
 		r1  string
@@ -46,8 +45,7 @@ func TestSplit(t *testing.T) {
 			args: args{
 				reader:    strings.NewReader(fixtures[0]),
 				hasHeader: true,
-				partSize1: 2,
-				partSize2: 2,
+				sep:       2,
 			},
 			want: want{
 				r1: `header1,header2
@@ -66,8 +64,7 @@ func TestSplit(t *testing.T) {
 			args: args{
 				reader:    strings.NewReader(fixtures[0]),
 				hasHeader: true,
-				partSize1: 1,
-				partSize2: 3,
+				sep:       1,
 			},
 			want: want{
 				r1: `header1,header2
@@ -86,8 +83,7 @@ func TestSplit(t *testing.T) {
 			args: args{
 				reader:    strings.NewReader(fixtures[1]),
 				hasHeader: false,
-				partSize1: 2,
-				partSize2: 2,
+				sep:       2,
 			},
 			want: want{
 				r1: `"1111","22222"
@@ -99,48 +95,19 @@ func TestSplit(t *testing.T) {
 			},
 			wantErr: false,
 		},
-		{
-			name: "Success not match size with No header",
-			args: args{
-				reader:    strings.NewReader(fixtures[1]),
-				hasHeader: false,
-				partSize1: 1,
-				partSize2: 3,
-			},
-			want: want{
-				r1: `"1111","22222"
-`,
-				r2: `33333,44444
-55555,66666
-77777,88888
-`,
-			},
-			wantErr: false,
-		},
-		{
-			name: "error not match sizes with No header",
-			args: args{
-				reader:    strings.NewReader(fixtures[1]),
-				hasHeader: false,
-				partSize1: 3,
-				partSize2: 3,
-			},
-			want:    want{},
-			wantErr: true,
-		},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			got1, got2, err := Split(tt.args.reader, tt.args.hasHeader, tt.args.partSize1, tt.args.partSize2)
+			gots, err := Split(tt.args.reader, tt.args.hasHeader, tt.args.sep)
 			if err != nil {
 				if !tt.wantErr {
-					t.Errorf("Split(%v, %t, %d, %d) errpr = %v, wantErr %t",
-						tt.args.reader, tt.args.hasHeader, tt.args.partSize1, tt.args.partSize2, err, tt.wantErr)
+					t.Errorf("Split(%v, %t, %d) errpr = %v, wantErr %t",
+						tt.args.reader, tt.args.hasHeader, tt.args.sep, err, tt.wantErr)
 				}
 				return
 			}
 			buf1 := new(bytes.Buffer)
-			if _, err := buf1.ReadFrom(got1); err != nil {
+			if _, err := buf1.ReadFrom(gots[0]); err != nil {
 				t.Fatal(err)
 			}
 			if diff := cmp.Diff(buf1.String(), tt.want.r1); diff != "" {
@@ -148,7 +115,7 @@ func TestSplit(t *testing.T) {
 			}
 
 			buf2 := new(bytes.Buffer)
-			if _, err := buf2.ReadFrom(got2); err != nil {
+			if _, err := buf2.ReadFrom(gots[1]); err != nil {
 				t.Fatal(err)
 			}
 			if diff := cmp.Diff(buf2.String(), tt.want.r2); diff != "" {
