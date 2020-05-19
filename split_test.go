@@ -1,12 +1,10 @@
-package splitter_test
+package main
 
 import (
 	"bytes"
 	"io"
 	"strings"
 	"testing"
-
-	"github.com/knwoop/go-splitter"
 
 	"github.com/google/go-cmp/cmp"
 )
@@ -133,7 +131,7 @@ func TestSplit(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			got1, got2, err := splitter.Split(tt.args.reader, tt.args.hasHeader, tt.args.partSize1, tt.args.partSize2)
+			got1, got2, err := Split(tt.args.reader, tt.args.hasHeader, tt.args.partSize1, tt.args.partSize2)
 			if err != nil {
 				if !tt.wantErr {
 					t.Errorf("Split(%v, %t, %d, %d) errpr = %v, wantErr %t",

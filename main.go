@@ -1,1 +1,1 @@
-package splitter
+package main

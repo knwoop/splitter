@@ -1,4 +1,4 @@
-module github.com/knwoop/go-splitter
+module github.com/knwoop/splitter
 
 go 1.14
 
