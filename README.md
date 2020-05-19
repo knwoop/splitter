@@ -7,6 +7,11 @@ A small Go utility for splitting a file into smaller ones.
 $ go get -u github.com/knwoop/splitter
 ```
 
+## sample cmd
+```shell script
+$ splitter -path _example/example.csv -sep 3 -head 
+```
+
 ## how to use
 ```go
 package main
