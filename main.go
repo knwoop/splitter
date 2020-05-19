@@ -3,6 +3,7 @@ package main
 import (
 	"flag"
 	"fmt"
+	"github.com/knwoop/splitter/split"
 	"io"
 	"log"
 	"os"
@@ -24,7 +25,7 @@ func main() {
 	if err != nil {
 		log.Fatal("error open a file", err.Error())
 	}
-	readers, err := Split(f, head, sep)
+	readers, err := split.Split(f, head, sep)
 	if err != nil {
 		log.Fatal(err)
 	}
